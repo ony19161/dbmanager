@@ -16,9 +16,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbManager
+namespace DbManager.Implementations
 {
-    
+
     public class AppDbContext : IDbContext
     {
         private readonly DbConnectionSettings dbConnectionSettings;
@@ -36,7 +36,7 @@ namespace DbManager
 
         public QueryFactory GetDb(DbConnection connection)
         {
-            return new QueryFactory(connection, new MySqlCompiler());
+            return new QueryFactory(connection, GetDbCompiler(dbConnectionSettings.Provider));
         }
 
         private DbConnection GetDbConnection(DbConnectionSettings settings)
@@ -68,13 +68,13 @@ namespace DbManager
                     return SqlCompilerFactory.GetSqlServerCompiler();
 
                 case DbProvider.MYSQL:
-                    return DbConnectionFactory.GetMySqlConnection(settings.ConnectionString);
+                    return SqlCompilerFactory.GetMySqlCompiler();
 
                 case DbProvider.SQLITE:
-                    return DbConnectionFactory.GetSqliteConnection(settings.ConnectionString);
+                    return SqlCompilerFactory.GetSqliteCompiler();
 
                 case DbProvider.POSTGRESQL:
-                    return DbConnectionFactory.GetPostgreSqlConnection(settings.ConnectionString);
+                    return SqlCompilerFactory.GetPostgreSqlCompiler();
 
                 default:
                     throw new Exception("Database provider invalid");
