@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbManager.Models
+namespace DbManager.Interfaces
 {
-    public class ConnectionStrings
+    internal interface IRepository
     {
-        public string DefaultConnection { get; set; } = string.Empty;
     }
 }

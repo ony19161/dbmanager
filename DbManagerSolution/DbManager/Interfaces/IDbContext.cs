@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace DbManager.Interfaces
 {
     public interface IDbContext
     {
-        Task<IDbConnection> CreateConnectionAsync();
-        QueryFactory GetDb(IDbConnection connection);
+        Task<DbConnection> CreateConnectionAsync();
+        QueryFactory GetDb(DbConnection connection);
     }
 }
