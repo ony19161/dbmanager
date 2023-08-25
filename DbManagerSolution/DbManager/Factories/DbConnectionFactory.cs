@@ -14,9 +14,10 @@ namespace DbManager.Factories
 {
     internal static class DbConnectionFactory
     {
-        internal static DbConnection GetSqlServerConnection(string connectionString)
+        // Update for ef core
+        /*internal static DbConnection GetSqlServerConnection(string connectionString)
         {
-            return new SqlConnection(connectionString);
+            //return new SqlConnection(connectionString);
         }
 
         internal static DbConnection GetMySqlConnection(string connectionString)
@@ -32,6 +33,6 @@ namespace DbManager.Factories
         internal static DbConnection GetPostgreSqlConnection(string connectionString)
         {
             return new NpgsqlConnection(connectionString);
-        }
+        }*/
     }
 }

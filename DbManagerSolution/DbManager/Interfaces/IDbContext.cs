@@ -12,6 +12,6 @@ namespace DbManager.Interfaces
     public interface IDbContext
     {
         Task<DbConnection> CreateConnectionAsync();
-        QueryFactory GetDb(DbConnection connection);
+        // Add necessary function for efcore
     }
 }
