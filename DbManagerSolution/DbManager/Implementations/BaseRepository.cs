@@ -1,4 +1,5 @@
 ﻿using DbManager.Interfaces;
+using SqlKata.Execution;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -50,32 +51,42 @@ namespace DbManager.Implementations
             return tableAttribute.Name;
         }
 
-        public Task<IList<TEntity>> GetAll()
+        public async Task<IList<TEntity>> GetAllAsync()
+        {
+            using var dbConnection = await dbContext.CreateConnectionAsync();
+            var dbSet = GetDbSet(dbConnection);
+
+            var resultSet = await dbSet.GetAsync<TEntity>();
+            return resultSet.ToList();
+        }
+
+        public async Task<TEntity> GetByIdAsync<IdType>(IdType id)
+        {
+            using var dbConnection = await dbContext.CreateConnectionAsync();
+            var dbSet = GetDbSet(dbConnection);
+
+            return await dbSet.Where("Id", id).FirstOrDefaultAsync<TEntity>();
+        }
+
+        public async Task<int> InsertAsync(TEntity entity)
+        {
+            using var dbConnection = await dbContext.CreateConnectionAsync();
+            var dbSet = GetDbSet(dbConnection);
+
+            return await dbSet.InsertAsync(entity); 
+        }
+
+        public Task<int> UpdateAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetById<IdType>(IdType id)
+        public Task<int> DeleteAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int?> Insert(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> Update(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> Delete(TEntity entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IList<ReturnType>> FetchListByStoredProcedure<ReturnType, P>(string storedProcedureName, P parameters)
+        public Task<IList<ReturnType>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters)
         {
             throw new NotImplementedException();
         }
