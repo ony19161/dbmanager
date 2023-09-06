@@ -15,10 +15,12 @@ namespace DbManager.Implementations
         private readonly DbConnectionSettings dbConnectionSettings;
 
         protected readonly IConfiguration _configuration;
+        private readonly string _entitiesAssemblyName;
 
         public AppDbContext(IConfiguration configuration)
         {
             _configuration = configuration;
+            _entitiesAssemblyName = _configuration.GetSection("EntitiesAssemblyName").Value;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -53,14 +55,18 @@ namespace DbManager.Implementations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // You can add any further configuration here.
+            AddDbSetForEntities(modelBuilder);
             base.OnModelCreating(modelBuilder);
         }
 
         // Use reflection to add DbSet properties dynamically based on your configuration.
         private void AddDbSetForEntities(ModelBuilder modelBuilder)
         {
+            // Load the specified assembly.
+            var assembly = Assembly.Load(_entitiesAssemblyName);
+
             // Scan the assembly containing your entities.
-            var entityTypes = Assembly.GetExecutingAssembly().GetTypes()
+            var entityTypes = assembly.GetTypes()
                 .Where(type => typeof(IEntity).IsAssignableFrom(type) && !type.IsAbstract);
 
             foreach (var entityType in entityTypes)
