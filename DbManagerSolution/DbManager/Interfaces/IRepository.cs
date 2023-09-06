@@ -8,7 +8,7 @@ namespace DbManager.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<TEntity> GetByIdAsync<IdType>(IdType id);
+        Task<TEntity> GetByIdAsync(object id);
         Task<IList<TEntity>> GetAllAsync();
         Task<int> InsertAsync(TEntity entity);
         Task<int> UpdateAsync(TEntity entity);

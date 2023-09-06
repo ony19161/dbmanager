@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\App.Db\App.Db.csproj" />
+    <ProjectReference Include="..\App.Dto\App.Dto.csproj" />
+    <ProjectReference Include="..\App.Repository\App.Repository.csproj" />
     <ProjectReference Include="..\App.Service\App.Service.csproj" />
     <ProjectReference Include="..\DbManager\DbManager.csproj" />
   </ItemGroup>

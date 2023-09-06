@@ -1,4 +1,5 @@
 ﻿using DbManager.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,14 +12,15 @@ using System.Threading.Tasks;
 
 namespace DbManager.Implementations
 {
-    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
-        public readonly IDbContext dbContext;
-        public readonly string tableName;
+        protected readonly DbContext _context;
+        protected readonly DbSet<TEntity> _dbSet;
 
-        public BaseRepository(IDbContext dbContext)
+        public BaseRepository(DbContext context)
         {
-            this.dbContext = dbContext;
+            _context = context;
+            _dbSet = context.Set<TEntity>();
         }
 
         public Task<int> DeleteAsync(TEntity entity)
@@ -36,9 +38,9 @@ namespace DbManager.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> GetByIdAsync<IdType>(IdType id)
+        public async Task<TEntity> GetByIdAsync(object id)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(id);
         }
 
         public Task<int> InsertAsync(TEntity entity)

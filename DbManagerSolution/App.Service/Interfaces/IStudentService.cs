@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbManager.Extensions
+namespace App.Service.Interfaces
 {
-    public static class Extensions
+    public interface IStudentService
     {
     }
 }
