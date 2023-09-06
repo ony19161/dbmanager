@@ -3,8 +3,9 @@ using Demo.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demo_Sql.API.Controllers
+namespace Demo_MySql.API.Controllers
 {
+
     [ApiController]
     public class StudentController : ControllerBase
     {

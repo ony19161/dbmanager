@@ -3,6 +3,7 @@ using Demo.Repository.Implementations;
 using Demo.Repository.Interfaces;
 using Demo.Service.Implementations;
 using Demo.Service.Interfaces;
+using Demo.Service.Mappings;
 
 namespace Demo_Sql.API
 {
@@ -17,6 +18,9 @@ namespace Demo_Sql.API
 
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IStudentQueryService, StudentQueryService>();
+
+            // Auto mapper config
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
