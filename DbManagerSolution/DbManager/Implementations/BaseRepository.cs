@@ -24,10 +24,10 @@ namespace DbManager.Implementations
             _dbSet = context.Set<TEntity>();
         }
 
-        public Task<int> DeleteAsync(TEntity entity)
+        public async Task<int> DeleteAsync(TEntity entity)
         {
-            throw new NotImplementedException();
-
+           _dbSet.Remove(entity);
+           return await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
@@ -50,9 +50,10 @@ namespace DbManager.Implementations
             return await _dbSet.FindAsync(id);
         }
 
-        public Task<int> InsertAsync(TEntity entity)
+        public async Task<int> InsertAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Add(entity);
+            return await _context.SaveChangesAsync();
         }
 
         public Task<int> UpdateAsync(TEntity entity)

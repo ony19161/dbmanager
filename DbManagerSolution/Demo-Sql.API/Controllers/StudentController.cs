@@ -1,4 +1,5 @@
-﻿using Demo.Dto.Request;
+﻿using Demo.Db.Models;
+using Demo.Dto.Request;
 using Demo.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,22 @@ namespace Demo_Sql.API.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            try
+            {
+                var studentList = await _studentQueryService.DeleteStudent(id);
+
+                return Ok(studentList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet]
         [Route("list")]
         public async Task<IActionResult> GetStudentList([FromQuery] StudentFilterRequest filterRequest)
@@ -55,6 +72,21 @@ namespace Demo_Sql.API.Controllers
             try
             {
                 var studentList = await _studentQueryService.GetStudentsByFilter(filterRequest);
+
+                return Ok(studentList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddStudent(Student student)
+        {
+            try
+            {
+                var studentList = await _studentQueryService.AddStudentSevice(student);
 
                 return Ok(studentList);
             }

@@ -16,6 +16,5 @@ namespace DbManager.Interfaces
         Task<int> UpdateAsync(TEntity entity);
         Task<int> DeleteAsync(TEntity entity);
         Task<IList<ReturnType>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters);
-
     }
 }

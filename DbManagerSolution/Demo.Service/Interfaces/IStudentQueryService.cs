@@ -1,4 +1,5 @@
-﻿using Demo.Dto.Request;
+﻿using Demo.Db.Models;
+using Demo.Dto.Request;
 using Demo.Dto.Response.Student;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,8 @@ namespace Demo.Service.Interfaces
         Task<IList<StudentInfo>> GetStudentsByFilter(StudentFilterRequest filterRequest);
 
         Task<List<StudentInfo>> GetAllStudent();
+
+        Task<List<StudentInfo>> DeleteStudent(int id);
+        Task<int> AddStudentSevice(Student student);
     }
 }

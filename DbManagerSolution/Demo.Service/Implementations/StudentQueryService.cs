@@ -35,12 +35,32 @@ namespace Demo.Service.Implementations
             return _mapper.Map<StudentInfo>(sStudent);
         }
 
+        public async Task<int> AddStudentSevice(Student student)
+        {
+            return await _studentRepository.InsertAsync(student);
+        }
+
         public async Task<List<StudentInfo>> GetAllStudent()
         {
             var sStudent = await _studentRepository.GetAllAsync();
 
             return sStudent.Select(s => _mapper.Map<StudentInfo>(s)).ToList();
         }
+
+        public async Task<List<StudentInfo>> DeleteStudent(int id)
+        {
+            var student = await _studentRepository.GetByIdAsync(id);
+
+            if(student == null)
+            {
+                throw new Exception("Student with Id = " + id + " not found");
+            }
+
+            await _studentRepository.DeleteAsync(student);
+
+            return await GetAllStudent();
+        }
+
         public async Task<IList<StudentInfo>> GetStudentsByFilter(StudentFilterRequest filterRequest)
         {
             Expression<Func<Student, bool>> predicates = s => s.BloodGroup.ToLower().Equals(filterRequest.BloodGroup.ToLower()) ||
