@@ -35,6 +35,12 @@ namespace Demo.Service.Implementations
             return _mapper.Map<StudentInfo>(sStudent);
         }
 
+        public async Task<List<StudentInfo>> GetAllStudent()
+        {
+            var sStudent = await _studentRepository.GetAllAsync();
+
+            return sStudent.Select(s => _mapper.Map<StudentInfo>(s)).ToList();
+        }
         public async Task<IList<StudentInfo>> GetStudentsByFilter(StudentFilterRequest filterRequest)
         {
             Expression<Func<Student, bool>> predicates = s => s.BloodGroup.ToLower().Equals(filterRequest.BloodGroup.ToLower()) ||

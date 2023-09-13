@@ -27,6 +27,7 @@ namespace DbManager.Implementations
         public Task<int> DeleteAsync(TEntity entity)
         {
             throw new NotImplementedException();
+
         }
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
@@ -39,9 +40,9 @@ namespace DbManager.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<IList<TEntity>> GetAllAsync()
+        public async Task<IList<TEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(object id)

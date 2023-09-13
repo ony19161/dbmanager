@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Demo_Sql.API.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
         private readonly IStudentQueryService _studentQueryService;
@@ -16,7 +17,7 @@ namespace Demo_Sql.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/student/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetStudentInfo(int id)
         {
             try
@@ -32,7 +33,23 @@ namespace Demo_Sql.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/student/list")]
+        [Route("GetAll")]
+        public async Task<IActionResult> GetAllStudents()
+        {
+            try
+            {
+                var studentList = await _studentQueryService.GetAllStudent();
+
+                return Ok(studentList);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("list")]
         public async Task<IActionResult> GetStudentList([FromQuery] StudentFilterRequest filterRequest)
         {
             try

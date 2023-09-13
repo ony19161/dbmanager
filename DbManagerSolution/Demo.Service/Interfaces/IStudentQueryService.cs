@@ -13,5 +13,7 @@ namespace Demo.Service.Interfaces
         Task<StudentInfo> GetStudentInfoAsync(object studentId);
 
         Task<IList<StudentInfo>> GetStudentsByFilter(StudentFilterRequest filterRequest);
+
+        Task<List<StudentInfo>> GetAllStudent();
     }
 }
