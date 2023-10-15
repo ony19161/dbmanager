@@ -1,4 +1,5 @@
 ﻿using DbManager.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -45,9 +46,29 @@ namespace DbManager.Implementations
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public Task<IList<ReturnType>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters)
+        public Task<List<TEntity>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var paramList = new List<SqlParameter>();
+
+                // Convert your parameters to SQL parameters
+                foreach (var prop in parameters.GetType().GetProperties())
+                {
+                    paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
+                }
+
+                // Execute the stored procedure
+                var result  =  _dbSet.FromSqlRaw($"EXEC {storedProcedureName} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToList();
+
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions (e.g., logging or custom error handling)
+                throw;
+            }
         }
 
         /// <summary>
