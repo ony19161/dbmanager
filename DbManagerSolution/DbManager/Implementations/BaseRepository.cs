@@ -59,14 +59,13 @@ namespace DbManager.Implementations
                 }
 
                 // Execute the stored procedure
-                var result  =  _dbSet.FromSqlRaw($"EXEC {storedProcedureName} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToList();
+                var result  =  _dbSet.FromSqlRaw($"EXEC {storedProcedureName} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToListAsync();
 
                 return result;
 
             }
             catch (Exception ex)
             {
-                // Handle any exceptions (e.g., logging or custom error handling)
                 throw;
             }
         }
