@@ -86,8 +86,17 @@ namespace DbManager.Implementations
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public Task<int> UpdateAsync(TEntity entity)
+        public async Task<int> UpdateAsync(TEntity entity)
         {
+            var obj = await _dbSet.FindAsync(entity.Id);
+
+            if (obj is not null)
+            {
+                _context.Entry(entity).State = EntityState.Modified;
+
+                return await _context.SaveChangesAsync();
+            }
+            return -1;
         }
     }
 }
