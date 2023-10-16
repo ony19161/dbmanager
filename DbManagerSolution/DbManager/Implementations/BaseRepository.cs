@@ -53,7 +53,7 @@ namespace DbManager.Implementations
                 var paramList = new List<SqlParameter>();
 
                 // Convert your parameters to SQL parameters
-                foreach (var prop in parameters.GetType().GetProperties())
+                foreach (var prop in parameters!.GetType().GetProperties())
                 {
                     paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
                 }

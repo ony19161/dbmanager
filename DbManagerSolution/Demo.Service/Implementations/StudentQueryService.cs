@@ -35,9 +35,9 @@ namespace Demo.Service.Implementations
             return _mapper.Map<StudentInfo>(sStudent);
         }
 
-        public async Task<int> AddStudentSevice(Student student)
+        public async Task<int> AddStudentSevice(AddStudentDTO addStudentDTO)
         {
-            return await _studentRepository.InsertAsync(student);
+            return await _studentRepository.InsertAsync(_mapper.Map<Student>(addStudentDTO));
         }
 
         public async Task<List<StudentInfo>> GetAllStudent()
@@ -73,6 +73,11 @@ namespace Demo.Service.Implementations
                 throw new KeyNotFoundException("Students not found");
 
             return _mapper.Map<IList<StudentInfo>>(sStudents.ToList());
+        }
+
+        public async Task<int> UpdateStudentSevice(UpdateStudentDTO updateStudentDTO)
+        {
+           return await _studentRepository.UpdateAsync(_mapper.Map<Student>(updateStudentDTO));
         }
     }
 }

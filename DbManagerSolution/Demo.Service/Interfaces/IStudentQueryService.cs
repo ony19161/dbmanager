@@ -18,6 +18,8 @@ namespace Demo.Service.Interfaces
         Task<List<StudentInfo>> GetAllStudent();
 
         Task<List<StudentInfo>> DeleteStudent(int id);
-        Task<int> AddStudentSevice(Student student);
+        Task<int> AddStudentSevice(AddStudentDTO student);
+
+        Task<int> UpdateStudentSevice(UpdateStudentDTO student);
     }
 }

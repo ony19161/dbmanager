@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Demo.Db.Models;
+using Demo.Dto.Request;
 using Demo.Dto.Response.Student;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,9 @@ namespace Demo.Service.Mappings
     {
         public AutoMapperProfile()
         {
-            CreateMap<Student, StudentInfo>();
+            CreateMap<Student, StudentInfo>().ReverseMap();
+            CreateMap<UpdateStudentDTO, Student>().ReverseMap();
+            CreateMap<AddStudentDTO, Student>().ReverseMap();
         }
     }
 }

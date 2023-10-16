@@ -82,15 +82,36 @@ namespace Demo_Sql.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddStudent(Student student)
+        public async Task<IActionResult> AddStudent(AddStudentDTO addStudentDTO)
         {
             try
             {
-                var studentList = await _studentQueryService.AddStudentSevice(student);
+                var studentList = await _studentQueryService.AddStudentSevice(addStudentDTO);
 
                 return Ok(studentList);
             }
             catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateStudent(UpdateStudentDTO updateStudentDTO)
+        {
+            try
+            {
+                var result = await _studentQueryService.UpdateStudentSevice(updateStudentDTO);
+
+                if (result != -1)
+                {
+                    return Ok(result);
+                }
+
+                return BadRequest("Couldn't update the entity");
+            }
+            catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
