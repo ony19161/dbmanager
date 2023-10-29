@@ -26,17 +26,6 @@ namespace DbManager.Implementations
         }
 
         /// <summary>
-        ///  Deletes an entity from your respected database.
-        /// </summary>
-        /// <param name="entity">Your Entity(DB table) Class. ex: Student,Person etc</param>
-        /// <returns></returns>
-        public async Task<int> DeleteAsync(TEntity entity)
-        {
-           _dbSet.Remove(entity);
-           return await _context.SaveChangesAsync();
-        }
-
-        /// <summary>
         /// Finds from your corresopnding Entity based on your provided predicate
         /// </summary>
         /// <param name="predicate"></param>
@@ -134,6 +123,17 @@ namespace DbManager.Implementations
 
             
             return -1;
+        }
+
+        /// <summary>
+        ///  Deletes an entity from your respected database.
+        /// </summary>
+        /// <param name="entity">Your Entity(DB table) Class. ex: Student,Person etc</param>
+        /// <returns></returns>
+        public async Task<int> DeleteAsync(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+            return await _context.SaveChangesAsync();
         }
     }
 }
