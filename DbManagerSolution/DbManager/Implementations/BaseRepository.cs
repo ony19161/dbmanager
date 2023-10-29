@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DbManager.Implementations
 {
-    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _context;
         protected readonly DbSet<TEntity> _dbSet;
@@ -108,14 +108,31 @@ namespace DbManager.Implementations
         /// <exception cref="NotImplementedException"></exception>
         public async Task<int> UpdateAsync(TEntity entity)
         {
-            var obj = await _dbSet.FindAsync(entity.Id);
-
-            if (obj is not null)
+            try
             {
-                _context.Entry(entity).State = EntityState.Modified;
+                PropertyInfo idProperty = entity.GetType().GetProperty("Id");
 
-                return await _context.SaveChangesAsync();
+                if (!ReferenceEquals(idProperty, null))
+                {
+                    object idValue = idProperty.GetValue(entity);
+
+                    var obj = await _dbSet.FindAsync(idValue);
+
+                    if (obj is not null)
+                    {
+                        _context.Entry(obj).State = EntityState.Detached;
+                        _context.Entry(entity).State = EntityState.Modified;
+
+                        return await _context.SaveChangesAsync();
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+            }
+
+            
             return -1;
         }
     }

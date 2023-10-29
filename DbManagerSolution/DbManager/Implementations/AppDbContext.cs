@@ -3,6 +3,7 @@ using DbManager.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Reflection;
 using System.Security.Principal;
@@ -67,7 +68,7 @@ namespace DbManager.Implementations
 
             // Scan the assembly containing your entities.
             var entityTypes = assembly.GetTypes()
-                .Where(type => typeof(IEntity).IsAssignableFrom(type) && !type.IsAbstract);
+                .Where(type => type.GetCustomAttribute<TableAttribute>() != null && !type.IsAbstract);
 
             foreach (var entityType in entityTypes)
             {

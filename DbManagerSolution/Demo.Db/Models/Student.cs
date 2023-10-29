@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Demo.Db.Models
 {
     [Table("Students")]
-    public class Student : IEntity
+    public class Student
     {
         [Key]
         public int Id { get; set; }
@@ -19,10 +19,6 @@ namespace Demo.Db.Models
         public string Section { get; set; }
         public string BirthDate { get; set; }
         public string BloodGroup { get; set; }
-        public int CreatedBy { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public int ModifiedBy { get; set; }
-        public DateTime ModifiedAt { get; set; }
 
     }
 }

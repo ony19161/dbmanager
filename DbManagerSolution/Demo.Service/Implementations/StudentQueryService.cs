@@ -37,6 +37,7 @@ namespace Demo.Service.Implementations
 
         public async Task<int> AddStudentSevice(AddStudentDTO addStudentDTO)
         {
+
             return await _studentRepository.InsertAsync(_mapper.Map<Student>(addStudentDTO));
         }
 
