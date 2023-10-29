@@ -25,7 +25,7 @@ For MS SQL Server:
       "DatabaseProvider": "SqlServer",
       "EntitiesAssemblyName": "Demo.Db", // Assembly name where you have your Entity classes
       "ConnectionStrings": {
-         "DefaultConnection": "Server=DESKTOP-8L9RIOK;Database=adventureworks;Integrated Security=true;TrustServerCertificate=True;MultipleActiveResultSets=true;"
+         "DefaultConnection": "your_sql_server_connection_string_here"
       }
     }
 
@@ -64,6 +64,19 @@ Inject the AppDbContext class into your desired Controller, Business, or Reposit
        }
     }
 
+    -----------------------------------------------------------------------------
+
+    public interface IStudentRepository : IRepository<Student>
+     {
+     }
+     
+
+ - In above code, BaseRepository is from "DbManager" library, and IStudentRepository must inherit from "IRepository" of "DbManager" library.
+   
+
+     
+
+   
 # Utilize Pre-defined CRUD Operations
 With DbManager integrated into your project, you can take advantage of all the CRUD methods already defined in the BaseRepository class. Here is a quick overview:
 
