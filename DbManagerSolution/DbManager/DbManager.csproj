@@ -10,7 +10,7 @@
 	<!-- nuget related properties -->
 	<Authors>Md Amanul Huque, Abhi Khan</Authors>
 	<Description>DbManager is a powerful package that simplifies the integration of CRUD.  It seamlessly supports various database systems like MS SQL Server, MySQL</Description>
-	<Version>1.0.0</Version>
+	<Version>1.0.1</Version>
 	<Copyright>Copyright 2023 © Md Amanul Huque. All rights reserved.</Copyright>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<RepositoryUrl>https://github.com/ony19161/dbmanager</RepositoryUrl>
