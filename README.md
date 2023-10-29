@@ -38,7 +38,22 @@ For MySQL:
          "DefaultConnection": "your_mysql_connection_string_here"
       }
     }
+# Step 5: Add entity class/classes
 
+    [Table("Students")]
+    public class Student
+    {
+       [Key]
+       public int Id { get; set; }
+       public string Name { get; set; }
+       public int RollNo { get; set; }
+       public string Section { get; set; }
+       public string BirthDate { get; set; }
+       public string BloodGroup { get; set; }
+    }
+
+ - You must mark your entity classes with [Table] annotation, otherwise "DbManager", will not be able to include them to the DbContext.
+   
 # Step 4: Inject DbManager into Your Classes
 Inject the AppDbContext class into your desired Controller, Business, or Repository class. For example, in a StudentRepository class:
 
