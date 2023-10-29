@@ -25,7 +25,7 @@ For MS SQL Server:
       "DatabaseProvider": "SqlServer",
       "EntitiesAssemblyName": "Demo.Db", // Assembly name where you have your Entity classes
       "ConnectionStrings": {
-         "DefaultConnection": "Server=DESKTOP-8L9RIOK;Database=adventureworks;Integrated Security=true;TrustServerCertificate=True;MultipleActiveResultSets=true;"
+         "DefaultConnection": "your_sql_server_connection_string_here"
       }
     }
 
