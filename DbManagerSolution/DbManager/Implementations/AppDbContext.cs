@@ -55,12 +55,10 @@ namespace DbManager.Implementations
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // You can add any further configuration here.
             AddDbSetForEntities(modelBuilder);
             base.OnModelCreating(modelBuilder);
         }
 
-        // Use reflection to add DbSet properties dynamically based on your configuration.
         private void AddDbSetForEntities(ModelBuilder modelBuilder)
         {
             // Load the specified assembly.
@@ -72,9 +70,7 @@ namespace DbManager.Implementations
 
             foreach (var entityType in entityTypes)
             {
-                // You can use your configuration mechanism here to decide whether to include this entity.
-                // For example, you could check for attributes, naming conventions, or a configuration file.
-                // For simplicity, we'll include all entities here.
+                // Adding entity classes to the model builder for EF Core
                 modelBuilder.Entity(entityType);
             }
         }
