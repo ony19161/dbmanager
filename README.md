@@ -7,13 +7,22 @@ Integrating DbManager into your project is as easy as 1-2-3-4:
 # Step 1: Add Project Reference
 Begin by adding DbManager to your solution as a project reference.
 
+* .Net CLI
+
+      dotnet add package DbManager.EFCore
+
+* Package Manager
+
+      Install-Package DbManager.EFCore
+
 # Step 2: Register Database Context
 In your Program.cs file, register the AppDbContext class of DbManager library:
 
     var builder = WebApplication.CreateBuilder(args);
-    // Add services to the container.
+    
+    // Use DbManager -> AppDbContext to register DbContext for your project.
     builder.Services.AddDbContext<AppDbContext>();
-    // now you can call your build method
+    
     var app = builder.Build();
 
 # Step 3: Configure Connection Strings
@@ -22,7 +31,7 @@ In your appsettings.json file, configure the connection strings based on your da
 For MS SQL Server:
 
     {
-      "DatabaseProvider": "SqlServer",
+      "DatabaseProvider": "SqlServer", 
       "EntitiesAssemblyName": "Demo.Db", // Assembly name where you have your Entity classes
       "ConnectionStrings": {
          "DefaultConnection": "your_sql_server_connection_string_here"
@@ -38,6 +47,7 @@ For MySQL:
          "DefaultConnection": "your_mysql_connection_string_here"
       }
     }
+    
 # Step 5: Add entity class/classes
 
     [Table("Students")]
@@ -59,7 +69,7 @@ Inject the AppDbContext class into your desired Controller, Business, or Reposit
 
     public class StudentRepository : BaseRepository<Student>, IStudentRepository
     {
-       public StudentRepository(AppDbContext context) : base(context)
+       public StudentRepository(AppDbContext context) : base(context) // Injected DbManager -> AppDbContext to StudentRepository
        {
        }
     }
@@ -80,13 +90,13 @@ Inject the AppDbContext class into your desired Controller, Business, or Reposit
 # Utilize Pre-defined CRUD Operations
 With DbManager integrated into your project, you can take advantage of all the CRUD methods already defined in the BaseRepository class. Here is a quick overview:
 
-* `DeleteAsync` : Delete a single entity object.
 * `FindAsync` : Find a single entity based on a provided predicate.
 * `FetchListBySPAsync`: Fetch a list of entities using a stored procedure and parameters.
 * `GetAllAsync`: Get all entity objects.
 * `GetByIdAsync`: Retrieve an entity object based on its ID.
 * `InsertAsync`: Insert a new entity object into the database.
 * `UpdateAsync`: Update an existing entity object.
+* `DeleteAsync` : Delete a single entity object.
   
 
 Remember, all methods are asynchronous, so ensure you use async/await properly while calling them.
