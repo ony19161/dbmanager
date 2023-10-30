@@ -18,6 +18,9 @@
 	<AssemblyName>DbManager.EFCore</AssemblyName>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Db, Context, EFCore, Multiple Provider</PackageTags>
+	<PackageReleaseNotes>- Bug Fix
+- Author name update</PackageReleaseNotes>
+	<PackageProjectUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-6</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
