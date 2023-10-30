@@ -41,7 +41,7 @@ namespace DbManager.Implementations
             {
                 var paramList = new List<SqlParameter>();
 
-                // Convert your parameters to SQL parameters
+                // Convert parameters to SQL parameters
                 foreach (var prop in parameters!.GetType().GetProperties())
                 {
                     paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
@@ -97,31 +97,24 @@ namespace DbManager.Implementations
         /// <exception cref="NotImplementedException"></exception>
         public async Task<int> UpdateAsync(TEntity entity)
         {
-            try
+            PropertyInfo idProperty = entity.GetType().GetProperty("Id");
+
+            if (!ReferenceEquals(idProperty, null))
             {
-                PropertyInfo idProperty = entity.GetType().GetProperty("Id");
+                object idValue = idProperty.GetValue(entity);
 
-                if (!ReferenceEquals(idProperty, null))
+                var obj = await _dbSet.FindAsync(idValue);
+
+                if (obj is not null)
                 {
-                    object idValue = idProperty.GetValue(entity);
+                    _context.Entry(obj).State = EntityState.Detached;
+                    _context.Entry(entity).State = EntityState.Modified;
 
-                    var obj = await _dbSet.FindAsync(idValue);
-
-                    if (obj is not null)
-                    {
-                        _context.Entry(obj).State = EntityState.Detached;
-                        _context.Entry(entity).State = EntityState.Modified;
-
-                        return await _context.SaveChangesAsync();
-                    }
+                    return await _context.SaveChangesAsync();
                 }
             }
-            catch (Exception ex)
-            {
-                await Console.Out.WriteLineAsync(ex.Message);
-            }
 
-            
+
             return -1;
         }
 
