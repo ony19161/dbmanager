@@ -10,8 +10,8 @@ namespace DbManager.Interfaces
     public interface IRepository<TEntity> where TEntity : class
     {
         Task<TEntity> GetByIdAsync(object id);
-        Task<IList<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<IList<TEntity>> GetAllAsync(int pageNo = 0, int pageSize = 0);
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, int pageNo = 0, int pageSize = 0);
         Task<int> InsertAsync(TEntity entity);
         Task<int> UpdateAsync(TEntity entity);
         Task<int> DeleteAsync(TEntity entity);

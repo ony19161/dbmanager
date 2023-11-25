@@ -30,9 +30,13 @@ namespace DbManager.Implementations
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate,
+            int pageNo = 0, int pageSize = 0)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            if (pageNo ==  0 && pageSize == 0) 
+                return await _dbSet.Where(predicate).ToListAsync();
+
+            return await _dbSet.Where(predicate).Skip((pageNo - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         public Task<List<TEntity>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters)
@@ -63,9 +67,12 @@ namespace DbManager.Implementations
         /// Get all data from the repected entity
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<TEntity>> GetAllAsync()
+        public async Task<IList<TEntity>> GetAllAsync(int pageNo = 0, int pageSize = 0)
         {
-            return await _dbSet.ToListAsync();
+            if (pageNo == 0 && pageSize == 0)
+                return await _dbSet.ToListAsync();
+
+            return await _dbSet.Skip((pageNo -1) * pageSize).Take(pageSize).ToListAsync();
         }
 
         /// <summary>
