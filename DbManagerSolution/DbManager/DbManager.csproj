@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<!-- where should the nuget package be created at -->
@@ -10,16 +10,16 @@
 	<!-- nuget related properties -->
 	<Authors>Md Amanul Huque, Md. Khalid Mahmud</Authors>
 	<Description>DbManager is a powerful package that simplifies the integration of CRUD.  It seamlessly supports various database systems like MS SQL Server, MySQL</Description>
-	<Version>1.0.4</Version>
+	<Version>2.0.0</Version>
 	<Copyright>Copyright 2023 © Md Amanul Huque. All rights reserved.</Copyright>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<RepositoryUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-6</RepositoryUrl>
+	<RepositoryUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-7</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
 	<AssemblyName>DbManager.EFCore</AssemblyName>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Db, Context, EFCore, Multiple Provider</PackageTags>
 	<PackageReleaseNotes>- Pagination added to FindAsync, GetAllAsync method</PackageReleaseNotes>
-	<PackageProjectUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-6</PackageProjectUrl>
+	<PackageProjectUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-7</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
