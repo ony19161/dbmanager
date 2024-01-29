@@ -1,5 +1,5 @@
 # Simplify Your .NET Project with DbManager
-DbManager is a powerful package that simplifies the integration of CRUD (Create, Read, Update, Delete) operations in your .NET projects. It seamlessly supports various database systems like MS SQL Server, MySQL, and allows you to choose between Entity Framework or Dapper as your preferred data access technology.
+DbManager is a powerful package that simplifies the integration of CRUD (Create, Read, Update, Delete) operations in your .NET projects. It seamlessly supports various database systems like MS SQL Server, MySQL, and leverages the functionalities of Entity Framework Core.
 
 # Getting Started
 Integrating DbManager into your project is as easy as 1-2-3-4:
