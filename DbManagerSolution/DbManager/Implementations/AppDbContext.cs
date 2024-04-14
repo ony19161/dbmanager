@@ -1,4 +1,5 @@
-﻿using DbManager.Interfaces;
+﻿using DbManager.Attributes;
+using DbManager.Interfaces;
 using DbManager.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -66,12 +67,22 @@ namespace DbManager.Implementations
 
             // Scan the assembly containing your entities.
             var entityTypes = assembly.GetTypes()
-                .Where(type => type.GetCustomAttribute<TableAttribute>() != null && !type.IsAbstract);
+                .Where(type => (type.GetCustomAttribute<TableAttribute>() != null ||
+                                type.GetCustomAttribute<StoredProcedureAttribute>() != null) && 
+                               !type.IsAbstract);
 
             foreach (var entityType in entityTypes)
             {
+                if (entityType.GetCustomAttribute<StoredProcedureAttribute>() != null)
+                {
+                    modelBuilder.Entity(entityType).HasNoKey().ToView(null);
+                }
+                else
+                {
+                    modelBuilder.Entity(entityType);
+                }
                 // Adding entity classes to the model builder for EF Core
-                modelBuilder.Entity(entityType);
+                
             }
         }
 
