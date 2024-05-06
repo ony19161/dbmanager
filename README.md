@@ -1,5 +1,5 @@
 # Simplify Your .NET Project with DbManager
-DbManager is a powerful package that simplifies the integration of CRUD (Create, Read, Update, Delete) operations in your .NET projects. It seamlessly supports various database systems like MS SQL Server, MySQL, and allows you to leverage the functionalities of Entity Framework Core as your ORM.
+DbManager is a powerful package that simplifies the integration of CRUD (Create, Read, Update, Delete) operations in your .NET projects. It seamlessly supports various database systems like MS SQL Server, MySQL, and leverages the functionalities of Entity Framework Core.
 
 # Getting Started
 Integrating DbManager into your project is as easy as 1-2-3-4:
@@ -48,7 +48,7 @@ For MySQL:
       }
     }
     
-# Step 5: Add entity class/classes
+# Step 4: Add entity class/classes
 
     [Table("Students")]
     public class Student
@@ -63,8 +63,23 @@ For MySQL:
     }
 
  - You must mark your entity classes with [Table] annotation, otherwise "DbManager", will not be able to include them to the DbContext.
+
+# Step 4.1: Add entity class/classes for stored procedures (Apply this step only if you need to)
+
+    [StoredProcedure("your_stored_procedure_name")]
+    public class StudentData
+    {
+       public int StudentId { get; set; }
+       public string Name { get; set; }
+       public int RollNo { get; set; }
+       public string Section { get; set; }
+       public string BirthDate { get; set; }
+       public string BloodGroup { get; set; }
+    }
+
+ - You must mark your entity classes with [StoredProcedure] annotation for which you want to fetch data using stored procedure, otherwise "DbManager", will not be able to include them to the DbContext.
    
-# Step 4: Inject DbManager into Your Classes
+# Step 5: Inject DbManager into Your Classes
 Inject the AppDbContext class into your desired Controller, Business, or Repository class. For example, in a StudentRepository class:
 
     public class StudentRepository : BaseRepository<Student>, IStudentRepository
@@ -91,7 +106,7 @@ Inject the AppDbContext class into your desired Controller, Business, or Reposit
 With DbManager integrated into your project, you can take advantage of all the CRUD methods already defined in the BaseRepository class. Here is a quick overview:
 
 * `FindAsync` : Find a single entity based on a provided predicate.
-* `FetchListBySPAsync`: Fetch a list of entities using a stored procedure and parameters.
+* `ExecuteStoredProcedureAsync`: Fetch a list of entities using a stored procedure and parameters.
 * `GetAllAsync`: Get all entity objects.
 * `GetByIdAsync`: Retrieve an entity object based on its ID.
 * `InsertAsync`: Insert a new entity object into the database.
