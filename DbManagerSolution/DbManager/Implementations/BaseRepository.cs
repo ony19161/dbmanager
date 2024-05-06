@@ -1,4 +1,5 @@
-﻿using DbManager.Interfaces;
+﻿using DbManager.Attributes;
+using DbManager.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -39,20 +40,21 @@ namespace DbManager.Implementations
             return await _dbSet.Where(predicate).Skip((pageNo - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
-        public Task<List<TEntity>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters)
+        public Task<List<ReturnType>> ExecuteStoredProcedureAsync<ReturnType, P>(P parameters, string schema = "dbo") where ReturnType : class
         {
             try
             {
                 var paramList = new List<SqlParameter>();
 
-                // Convert parameters to SQL parameters
+                var storedProcedureAttribute = typeof(ReturnType).GetCustomAttributes<StoredProcedureAttribute>().FirstOrDefault();
+
                 foreach (var prop in parameters!.GetType().GetProperties())
                 {
                     paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
                 }
 
                 // Execute the stored procedure
-                var result  =  _dbSet.FromSqlRaw($"EXEC {storedProcedureName} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToListAsync();
+                var result = _context.Set<ReturnType>().FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToListAsync();
 
                 return result;
 

@@ -15,6 +15,6 @@ namespace DbManager.Interfaces
         Task<int> InsertAsync(TEntity entity);
         Task<int> UpdateAsync(TEntity entity);
         Task<int> DeleteAsync(TEntity entity);
-        Task<List<TEntity>> FetchListBySPAsync<ReturnType, P>(string storedProcedureName, P parameters);
+        Task<List<ReturnType>> ExecuteStoredProcedureAsync<ReturnType, P>(P parameters, string schema = "dbo") where ReturnType : class;
     }
 }

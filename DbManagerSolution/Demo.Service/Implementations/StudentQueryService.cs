@@ -64,11 +64,15 @@ namespace Demo.Service.Implementations
 
         public async Task<IList<StudentInfo>> GetStudentsByFilter(StudentFilterRequest filterRequest)
         {
+            /*
             Expression<Func<Student, bool>> predicates = s => s.BloodGroup.ToLower().Equals(filterRequest.BloodGroup.ToLower()) ||
                                                               s.Section.ToLower().Equals(filterRequest.Section.ToLower());
                         
 
             var sStudents = await _studentRepository.FindAsync(predicates);
+            */
+
+            var sStudents = await _studentRepository.GetStudents(filterRequest);
 
             if (ReferenceEquals(sStudents, null))
                 throw new KeyNotFoundException("Students not found");
