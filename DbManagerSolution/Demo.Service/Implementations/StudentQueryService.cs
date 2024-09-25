@@ -84,5 +84,12 @@ namespace Demo.Service.Implementations
         {
            return await _studentRepository.UpdateAsync(_mapper.Map<Student>(updateStudentDTO));
         }
+
+        public async Task<int> GetTotalStudentCount()
+        {
+            var scalerData = await _studentRepository.GetTotalStudentCount();
+
+            return scalerData is not null ? scalerData.Value : 0;
+        }
     }
 }

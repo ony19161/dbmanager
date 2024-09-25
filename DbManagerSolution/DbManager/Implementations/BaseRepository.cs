@@ -12,6 +12,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DbManager.Implementations
 {
@@ -37,7 +38,7 @@ namespace DbManager.Implementations
             if (pageNo ==  0 && pageSize == 0) 
                 return await _dbSet.Where(predicate).ToListAsync();
 
-            return await _dbSet.Where(predicate).Skip((pageNo - 1) * pageSize).Take(pageSize).ToListAsync();
+            return await _dbSet.Where(predicate).Skip((pageNo - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync();
         }
 
         public Task<List<ReturnType>> ExecuteStoredProcedureAsync<ReturnType, P>(P parameters, string schema = "dbo") where ReturnType : class
@@ -74,7 +75,7 @@ namespace DbManager.Implementations
             if (pageNo == 0 && pageSize == 0)
                 return await _dbSet.ToListAsync();
 
-            return await _dbSet.Skip((pageNo -1) * pageSize).Take(pageSize).ToListAsync();
+            return await _dbSet.Skip((pageNo -1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -137,5 +138,24 @@ namespace DbManager.Implementations
             _dbSet.Remove(entity);
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<ReturnType> GetScalerValueByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
+        {
+            if (sqlQuery is null)
+                throw new ArgumentNullException(nameof(sqlQuery));
+
+            return await _context.Database
+                    .SqlQuery<ReturnType>(sqlQuery).FirstOrDefaultAsync();            
+        }
+
+        public async Task<List<ReturnType>> GetListByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
+        {
+            if (sqlQuery is null)
+                throw new ArgumentNullException(nameof(sqlQuery));
+
+            return await _context.Database
+                    .SqlQuery<ReturnType>(sqlQuery).ToListAsync();
+        }
+
     }
 }

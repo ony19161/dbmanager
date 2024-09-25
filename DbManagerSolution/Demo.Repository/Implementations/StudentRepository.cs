@@ -25,5 +25,11 @@ namespace Demo.Repository.Implementations
 
             return result;
         }
+
+        public async Task<ScalerData<int>> GetTotalStudentCount()
+        {
+            FormattableString sql = $"SELECT COUNT(*) as Value FROM Students";
+            return await base.GetScalerValueByQueryAsync<ScalerData<int>>(sql);
+        }
     }
 }

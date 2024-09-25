@@ -10,15 +10,15 @@
 	<!-- nuget related properties -->
 	<Authors>Md Amanul Huque, Md. Khalid Mahmud</Authors>
 	<Description>DbManager is a powerful package that simplifies the integration of CRUD.  It seamlessly supports various database systems like MS SQL Server, MySQL</Description>
-	<Version>3.0.0</Version>
-	<Copyright>Copyright 2023 © Md Amanul Huque. All rights reserved.</Copyright>
+	<Version>3.0.1</Version>
+	<Copyright>Copyright 2024 © Md Amanul Huque. All rights reserved.</Copyright>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<RepositoryUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-6</RepositoryUrl>
+	<RepositoryUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-8</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
 	<AssemblyName>DbManager.EFCore</AssemblyName>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageTags>Db, Context, EFCore, Multiple Provider</PackageTags>
-	<PackageReleaseNotes>- Update for .net core 8</PackageReleaseNotes>
+	<PackageReleaseNotes>- Added AsNoTracking for result set - Added generic methods to execute raw sql query to get singular or list data</PackageReleaseNotes>
 	<PackageProjectUrl>https://github.com/ony19161/dbmanager/tree/efcore-dev/dotnet-8</PackageProjectUrl>
   </PropertyGroup>
 

@@ -13,5 +13,6 @@ namespace Demo.Repository.Interfaces
     public interface IStudentRepository : IRepository<Student>
     {
         Task<List<StudentData>> GetStudents(StudentFilterRequest filters);
+        Task<ScalerData<int>> GetTotalStudentCount();
     }
 }

@@ -16,6 +16,7 @@ namespace Demo.Service.Interfaces
         Task<IList<StudentInfo>> GetStudentsByFilter(StudentFilterRequest filterRequest);
 
         Task<List<StudentInfo>> GetAllStudent();
+        Task<int> GetTotalStudentCount();
 
         Task<List<StudentInfo>> DeleteStudent(int id);
         Task<int> AddStudentSevice(AddStudentDTO student);

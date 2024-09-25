@@ -40,8 +40,9 @@ namespace Demo_Sql.API.Controllers
             try
             {
                 var studentList = await _studentQueryService.GetAllStudent();
+                var studentCount = await _studentQueryService.GetTotalStudentCount();
 
-                return Ok(studentList);
+                return Ok(new { studentList = studentList, totalCount = studentCount });
             }
             catch (Exception ex)
             {
