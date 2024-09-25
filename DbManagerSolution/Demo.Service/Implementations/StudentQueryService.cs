@@ -37,8 +37,13 @@ namespace Demo.Service.Implementations
 
         public async Task<int> AddStudentSevice(AddStudentDTO addStudentDTO)
         {
+            var sStudent = _mapper.Map<Student>(addStudentDTO);
+            sStudent.CreatedBy = 1;
+            sStudent.ModifiedBy = 1;
+            sStudent.CreatedAt = DateTime.UtcNow;
+            sStudent.ModifiedAt = DateTime.UtcNow;
 
-            return await _studentRepository.InsertAsync(_mapper.Map<Student>(addStudentDTO));
+            return await _studentRepository.InsertAsync(sStudent);
         }
 
         public async Task<List<StudentInfo>> GetAllStudent()

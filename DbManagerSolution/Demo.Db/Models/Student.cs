@@ -19,6 +19,11 @@ namespace Demo.Db.Models
         public string Section { get; set; }
         public string BirthDate { get; set; }
         public string BloodGroup { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int ModifiedBy { get; set; }
+        public DateTime ModifiedAt { get; set; }
+
 
     }
 }
