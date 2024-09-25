@@ -45,19 +45,22 @@ namespace DbManager.Implementations
         {
             try
             {
-                var paramList = new List<SqlParameter>();
-
-                var storedProcedureAttribute = typeof(ReturnType).GetCustomAttributes<StoredProcedureAttribute>().FirstOrDefault();
-
-                foreach (var prop in parameters!.GetType().GetProperties())
+                using (_context)
                 {
-                    paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
+                    var paramList = new List<SqlParameter>();
+
+                    var storedProcedureAttribute = typeof(ReturnType).GetCustomAttributes<StoredProcedureAttribute>().FirstOrDefault();
+
+                    foreach (var prop in parameters!.GetType().GetProperties())
+                    {
+                        paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
+                    }
+
+                    // Execute the stored procedure
+                    var result = _context.Set<ReturnType>().FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToListAsync();
+
+                    return result;
                 }
-
-                // Execute the stored procedure
-                var result = _context.Set<ReturnType>().FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToListAsync();
-
-                return result;
 
             }
             catch (Exception ex)
@@ -95,8 +98,11 @@ namespace DbManager.Implementations
         /// <returns></returns>
         public async Task<int> InsertAsync(TEntity entity)
         {
-            _dbSet.Add(entity);
-            return await _context.SaveChangesAsync();
+            using (_context)
+            {
+                _dbSet.Add(entity);
+                return await _context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
@@ -107,25 +113,28 @@ namespace DbManager.Implementations
         /// <exception cref="NotImplementedException"></exception>
         public async Task<int> UpdateAsync(TEntity entity)
         {
-            PropertyInfo idProperty = entity.GetType().GetProperty("Id");
-
-            if (!ReferenceEquals(idProperty, null))
+            using (_context)
             {
-                object idValue = idProperty.GetValue(entity);
+                PropertyInfo idProperty = entity.GetType().GetProperty("Id");
 
-                var obj = await _dbSet.FindAsync(idValue);
-
-                if (obj is not null)
+                if (!ReferenceEquals(idProperty, null))
                 {
-                    _context.Entry(obj).State = EntityState.Detached;
-                    _context.Entry(entity).State = EntityState.Modified;
+                    object idValue = idProperty.GetValue(entity);
 
-                    return await _context.SaveChangesAsync();
+                    var obj = await _dbSet.FindAsync(idValue);
+
+                    if (obj is not null)
+                    {
+                        _context.Entry(obj).State = EntityState.Detached;
+                        _context.Entry(entity).State = EntityState.Modified;
+
+                        return await _context.SaveChangesAsync();
+                    }
                 }
+
+
+                return -1;
             }
-
-
-            return -1;
         }
 
         /// <summary>
@@ -135,26 +144,38 @@ namespace DbManager.Implementations
         /// <returns></returns>
         public async Task<int> DeleteAsync(TEntity entity)
         {
-            _dbSet.Remove(entity);
-            return await _context.SaveChangesAsync();
+            using (_context)
+            {
+                _dbSet.Remove(entity);
+                return await _context.SaveChangesAsync();
+            }
+            
         }
 
         public async Task<ReturnType> GetScalerValueByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
         {
-            if (sqlQuery is null)
-                throw new ArgumentNullException(nameof(sqlQuery));
+            using (_context)
+            {
+                if (sqlQuery is null)
+                    throw new ArgumentNullException(nameof(sqlQuery));
 
-            return await _context.Database
-                    .SqlQuery<ReturnType>(sqlQuery).FirstOrDefaultAsync();            
+                return await _context.Database
+                        .SqlQuery<ReturnType>(sqlQuery).FirstOrDefaultAsync();
+            }
+                     
         }
 
         public async Task<List<ReturnType>> GetListByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
         {
-            if (sqlQuery is null)
-                throw new ArgumentNullException(nameof(sqlQuery));
+            using (_context)
+            {
+                if (sqlQuery is null)
+                    throw new ArgumentNullException(nameof(sqlQuery));
 
-            return await _context.Database
-                    .SqlQuery<ReturnType>(sqlQuery).ToListAsync();
+                return await _context.Database
+                        .SqlQuery<ReturnType>(sqlQuery).ToListAsync();
+            }
+            
         }
 
     }
