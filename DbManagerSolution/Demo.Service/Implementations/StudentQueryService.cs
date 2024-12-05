@@ -94,7 +94,7 @@ namespace Demo.Service.Implementations
         {
             var scalerData = await _studentRepository.GetTotalStudentCount();
 
-            return scalerData is not null ? scalerData.value : 0;
+            return scalerData is not null ? scalerData.Value : 0;
         }
     }
 }

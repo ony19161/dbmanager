@@ -36,7 +36,7 @@ namespace Demo.Repository.Implementations
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new ScalerData<int> { value = 0};
+                return new ScalerData<int> { Value = 0};
             }
         }
     }
