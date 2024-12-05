@@ -43,10 +43,10 @@ namespace DbManager.Implementations
                 {
                     optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
                 }
-                //else if (databaseProvider == "PostgreSQL")
-                //{
-                //    optionsBuilder.UseNpgsql(connectionString, ServerVersion.AutoDetect(connectionString));
-                //}
+                else if (databaseProvider == "PostgreSQL")
+                {
+                    optionsBuilder.UseNpgsql(connectionString);
+                }
                 else
                 {
                     throw new NotSupportedException($"Database provider '{databaseProvider}' is not supported.");
