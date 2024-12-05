@@ -28,8 +28,16 @@ namespace Demo.Repository.Implementations
 
         public async Task<ScalerData<int>> GetTotalStudentCount()
         {
-            FormattableString sql = $"SELECT COUNT(*) as Value FROM Students";
-            return await base.GetScalerValueByQueryAsync<ScalerData<int>>(sql);
+            try
+            {
+                FormattableString sql = $"SELECT COUNT(*) as value FROM students";
+                return await base.GetScalerValueByQueryAsync<ScalerData<int>>(sql);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new ScalerData<int> { value = 0};
+            }
         }
     }
 }

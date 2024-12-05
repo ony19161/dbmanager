@@ -8,6 +8,6 @@ namespace Demo.Db.ComplexModels
 {
     public class ScalerData<T>
     {
-        public T? Value { get; set; }
+        public T? value { get; set; }
     }
 }
