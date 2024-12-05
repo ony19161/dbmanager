@@ -41,7 +41,7 @@ namespace DbManager.Implementations
             return await _dbSet.Where(predicate).Skip((pageNo - 1) * pageSize).Take(pageSize).AsNoTracking().ToListAsync();
         }
 
-        public Task<List<ReturnType>> ExecuteStoredProcedureAsync<ReturnType, P>(P parameters, string schema = "dbo") where ReturnType : class
+        public async Task<List<ReturnType>> ExecuteStoredProcedureAsync<ReturnType, P>(P parameters, string schema = "dbo") where ReturnType : class
         {
             try
             {
@@ -57,7 +57,9 @@ namespace DbManager.Implementations
                     }
 
                     // Execute the stored procedure
-                    var result = _context.Set<ReturnType>().FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray()).ToListAsync();
+                    var result = await _context.Set<ReturnType>()
+                                               .FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray())
+                                               .ToListAsync();
 
                     return result;
                 }
