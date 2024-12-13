@@ -32,7 +32,7 @@ namespace DbManager.Implementations
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate,
+        public async Task<IEnumerable<TEntity>> FindByAsync(Expression<Func<TEntity, bool>> predicate,
             int pageNo = 0, int pageSize = 0)
         {
             if (pageNo ==  0 && pageSize == 0) 

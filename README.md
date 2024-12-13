@@ -34,7 +34,7 @@ For MS SQL Server:
       "DatabaseProvider": "SqlServer", 
       "EntitiesAssemblyName": "Demo.Db", // Assembly name where you have your Entity classes
       "ConnectionStrings": {
-         "DefaultConnection": "your_sql_server_connection_string_here"
+         "DefaultConnection": "your_sql_server_connection_string"
       }
     }
 
@@ -44,7 +44,17 @@ For MySQL:
       "DatabaseProvider": "MySql",
       "EntitiesAssemblyName": "Demo.Db",
       "ConnectionStrings": {
-         "DefaultConnection": "your_mysql_connection_string_here"
+         "DefaultConnection": "your_mysql_connection_string"
+      }
+    }
+
+For PostgreSQL:
+
+    {
+      "DatabaseProvider": "PostgreSQL",
+      "EntitiesAssemblyName": "Demo.Db",
+      "ConnectionStrings": {
+         "DefaultConnection": "your_postgresql_connection_string"
       }
     }
     
@@ -105,7 +115,7 @@ Inject the AppDbContext class into your desired Controller, Business, or Reposit
 # Utilize Pre-defined CRUD Operations
 With DbManager integrated into your project, you can take advantage of all the CRUD methods already defined in the BaseRepository class. Here is a quick overview:
 
-* `FindAsync` : Find a single entity based on a provided predicate.
+* `FindByAsync` : Find a single entity based on a provided predicate.
 * `ExecuteStoredProcedureAsync`: Fetch a list of entities using a stored procedure and parameters.
 * `GetAllAsync`: Get all entity objects.
 * `GetByIdAsync`: Retrieve an entity object based on its ID.
