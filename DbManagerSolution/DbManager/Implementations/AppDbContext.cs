@@ -12,7 +12,7 @@ using System.Security.Principal;
 namespace DbManager.Implementations
 {
 
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IDbContext
     {
         private readonly DbConnectionSettings dbConnectionSettings;
 
@@ -64,7 +64,7 @@ namespace DbManager.Implementations
             base.OnModelCreating(modelBuilder);
         }
 
-        private void AddDbSetForEntities(ModelBuilder modelBuilder)
+        public void AddDbSetForEntities(ModelBuilder modelBuilder)
         {
             // Load the specified assembly.
             var assembly = Assembly.Load(_entitiesAssemblyName);
