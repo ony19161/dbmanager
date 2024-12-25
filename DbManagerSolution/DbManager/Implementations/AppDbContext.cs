@@ -71,15 +71,22 @@ namespace DbManager.Implementations
 
             // Scan the assembly containing your entities.
             var entityTypes = assembly.GetTypes()
-                .Where(type => (type.GetCustomAttribute<TableAttribute>() != null ||
-                                type.GetCustomAttribute<StoredProcedureAttribute>() != null) &&
-                               !type.IsAbstract);
+                                      .Where(type => (type.GetCustomAttribute<TableAttribute>() != null ||
+                                                      type.GetCustomAttribute<StoredProcedureAttribute>() != null) ||
+                                                      typeof(IDbResult).IsAssignableFrom(type) &&
+                                                      !type.IsAbstract);
 
             foreach (var entityType in entityTypes)
             {
                 // Adding entity classes to the model builder for EF Core
-                if (entityType.GetCustomAttribute<StoredProcedureAttribute>() != null)
+                if (typeof(IDbResult).IsAssignableFrom(entityType))
                 {
+                    // If entity implements IDbResult, treat it as a result without a key
+                    modelBuilder.Entity(entityType).HasNoKey().ToView(null);
+                }
+                else if (entityType.GetCustomAttribute<StoredProcedureAttribute>() != null)
+                {
+                    // If entity has StoredProcedureAttribute, treat it as a result without a key
                     modelBuilder.Entity(entityType).HasNoKey().ToView(null);
                 }
                 else
