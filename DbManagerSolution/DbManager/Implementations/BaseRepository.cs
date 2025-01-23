@@ -95,10 +95,9 @@ namespace DbManager.Implementations
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<int> InsertAsync(TEntity entity)
+        public async Task InsertAsync(TEntity entity)
         {
             _dbSet.Add(entity);
-            return await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace DbManager.Implementations
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<int> UpdateAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             PropertyInfo idProperty = entity.GetType().GetProperty("Id");
 
@@ -121,13 +120,8 @@ namespace DbManager.Implementations
                 {
                     _context.Entry(obj).State = EntityState.Detached;
                     _context.Entry(entity).State = EntityState.Modified;
-
-                    return await _context.SaveChangesAsync();
                 }
             }
-
-
-            return -1;
         }
 
         /// <summary>
@@ -135,11 +129,9 @@ namespace DbManager.Implementations
         /// </summary>
         /// <param name="entity">Your Entity(DB table) Class. ex: Student,Person etc</param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
             _dbSet.Remove(entity);
-            return await _context.SaveChangesAsync();
-
         }
 
         public async Task<ReturnType> GetScalerValueByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
