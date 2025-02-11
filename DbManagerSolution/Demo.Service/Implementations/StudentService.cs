@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Demo.Service.Implementations
 {
-    public class StudentQueryService : IStudentQueryService
+    public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMapper _mapper;
 
-        public StudentQueryService(IStudentRepository studentRepository, IMapper mapper)
+        public StudentService(IStudentRepository studentRepository, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _mapper = mapper;
@@ -43,7 +43,8 @@ namespace Demo.Service.Implementations
             sStudent.CreatedAt = DateTime.UtcNow;
             sStudent.ModifiedAt = DateTime.UtcNow;
 
-            return await _studentRepository.InsertAsync(sStudent);
+            await _studentRepository.InsertAsync(sStudent);
+            return _studentRepository.SaveChanges(); 
         }
 
         public async Task<List<StudentInfo>> GetAllStudent()

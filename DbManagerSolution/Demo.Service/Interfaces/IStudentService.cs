@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Service.Interfaces
 {
-    public interface IStudentQueryService
+    public interface IStudentService
     {
         Task<StudentInfo> GetStudentInfoAsync(object studentId);
 

@@ -17,7 +17,7 @@ namespace Demo_Sql.API
             builder.Services.AddDbContext<AppDbContext>();
 
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
-            builder.Services.AddScoped<IStudentQueryService, StudentQueryService>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
 
             // Auto mapper config
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

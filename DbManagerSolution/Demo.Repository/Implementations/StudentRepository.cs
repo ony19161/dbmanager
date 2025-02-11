@@ -39,5 +39,10 @@ namespace Demo.Repository.Implementations
                 return new ScalerData<int> { Value = 0};
             }
         }
+
+        public int SaveChanges()
+        {
+            return base._context.SaveChanges();
+        }
     }
 }

@@ -9,9 +9,9 @@ namespace Demo_PostgreSQL.API.Controllers
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
-        private readonly IStudentQueryService _studentQueryService;
+        private readonly IStudentService _studentQueryService;
 
-        public StudentController(IStudentQueryService studentQueryService)
+        public StudentController(IStudentService studentQueryService)
         {
             _studentQueryService = studentQueryService;
         }

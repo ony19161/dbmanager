@@ -1,3 +1,4 @@
+
 using DbManager.Implementations;
 using Demo.Repository.Implementations;
 using Demo.Repository.Interfaces;
@@ -5,7 +6,7 @@ using Demo.Service.Implementations;
 using Demo.Service.Interfaces;
 using Demo.Service.Mappings;
 
-namespace Demo_MySql.API
+namespace Demo_Sqlite.API
 {
     public class Program
     {
@@ -21,6 +22,7 @@ namespace Demo_MySql.API
 
             // Auto mapper config
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -34,6 +36,8 @@ namespace Demo_MySql.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseHttpsRedirection();
 
             app.UseAuthorization();
 

@@ -47,6 +47,10 @@ namespace DbManager.Implementations
                 {
                     optionsBuilder.UseNpgsql(connectionString);
                 }
+                else if (databaseProvider == "SqLite")
+                {
+                    optionsBuilder.UseSqlite(connectionString);
+                }
                 else
                 {
                     throw new NotSupportedException($"Database provider '{databaseProvider}' is not supported.");

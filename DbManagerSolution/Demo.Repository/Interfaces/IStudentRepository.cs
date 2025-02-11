@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Demo.Repository.Interfaces
 {
-    public interface IStudentRepository : IRepository<Student>
+    public interface IStudentRepository : IRepository<Student>, ISaveChanges
     {
         Task<List<StudentData>> GetStudents(StudentFilterRequest filters);
         Task<ScalerData<int>> GetTotalStudentCount();

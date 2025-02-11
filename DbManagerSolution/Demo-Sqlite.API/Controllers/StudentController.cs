@@ -1,10 +1,9 @@
-﻿using Demo.Db.Models;
-using Demo.Dto.Request;
+﻿using Demo.Dto.Request;
 using Demo.Service.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demo_Sql.API.Controllers
+namespace Demo_Sqlite.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -112,7 +111,7 @@ namespace Demo_Sql.API.Controllers
 
                 return BadRequest("Couldn't update the entity");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
