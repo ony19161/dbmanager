@@ -45,24 +45,21 @@ namespace DbManager.Implementations
         {
             try
             {
-                using (_context)
+                var paramList = new List<SqlParameter>();
+
+                var storedProcedureAttribute = typeof(ReturnType).GetCustomAttributes<StoredProcedureAttribute>().FirstOrDefault();
+
+                foreach (var prop in parameters!.GetType().GetProperties())
                 {
-                    var paramList = new List<SqlParameter>();
-
-                    var storedProcedureAttribute = typeof(ReturnType).GetCustomAttributes<StoredProcedureAttribute>().FirstOrDefault();
-
-                    foreach (var prop in parameters!.GetType().GetProperties())
-                    {
-                        paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
-                    }
-
-                    // Execute the stored procedure
-                    var result = await _context.Set<ReturnType>()
-                                               .FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray())
-                                               .ToListAsync();
-
-                    return result;
+                    paramList.Add(new SqlParameter(prop.Name, prop.GetValue(parameters)));
                 }
+
+                // Execute the stored procedure
+                var result = await _context.Set<ReturnType>()
+                                           .FromSqlRaw($"EXEC {schema}.{storedProcedureAttribute.Name} {string.Join(", ", paramList.Select(p => $"@{p.ParameterName}"))}", paramList.ToArray())
+                                           .ToListAsync();
+
+                return result;
 
             }
             catch (Exception ex)
@@ -98,13 +95,9 @@ namespace DbManager.Implementations
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<int> InsertAsync(TEntity entity)
+        public async Task InsertAsync(TEntity entity)
         {
-            using (_context)
-            {
-                _dbSet.Add(entity);
-                return await _context.SaveChangesAsync();
-            }
+            _dbSet.Add(entity);
         }
 
         /// <summary>
@@ -113,29 +106,21 @@ namespace DbManager.Implementations
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<int> UpdateAsync(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
-            using (_context)
+            PropertyInfo idProperty = entity.GetType().GetProperty("Id");
+
+            if (!ReferenceEquals(idProperty, null))
             {
-                PropertyInfo idProperty = entity.GetType().GetProperty("Id");
+                object idValue = idProperty.GetValue(entity);
 
-                if (!ReferenceEquals(idProperty, null))
+                var obj = await _dbSet.FindAsync(idValue);
+
+                if (obj is not null)
                 {
-                    object idValue = idProperty.GetValue(entity);
-
-                    var obj = await _dbSet.FindAsync(idValue);
-
-                    if (obj is not null)
-                    {
-                        _context.Entry(obj).State = EntityState.Detached;
-                        _context.Entry(entity).State = EntityState.Modified;
-
-                        return await _context.SaveChangesAsync();
-                    }
+                    _context.Entry(obj).State = EntityState.Detached;
+                    _context.Entry(entity).State = EntityState.Modified;
                 }
-
-
-                return -1;
             }
         }
 
@@ -144,40 +129,29 @@ namespace DbManager.Implementations
         /// </summary>
         /// <param name="entity">Your Entity(DB table) Class. ex: Student,Person etc</param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync(TEntity entity)
+        public async Task DeleteAsync(TEntity entity)
         {
-            using (_context)
-            {
-                _dbSet.Remove(entity);
-                return await _context.SaveChangesAsync();
-            }
-            
+            _dbSet.Remove(entity);
         }
 
         public async Task<ReturnType> GetScalerValueByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
         {
-            using (_context)
-            {
-                if (sqlQuery is null)
-                    throw new ArgumentNullException(nameof(sqlQuery));
+            if (sqlQuery is null)
+                throw new ArgumentNullException(nameof(sqlQuery));
 
-                return await _context.Database
-                        .SqlQuery<ReturnType>(sqlQuery).FirstOrDefaultAsync();
-            }
-                     
+            return await _context.Database
+                    .SqlQuery<ReturnType>(sqlQuery).FirstOrDefaultAsync();
+
         }
 
         public async Task<List<ReturnType>> GetListByQueryAsync<ReturnType>(FormattableString sqlQuery) where ReturnType : class
         {
-            using (_context)
-            {
-                if (sqlQuery is null)
-                    throw new ArgumentNullException(nameof(sqlQuery));
+            if (sqlQuery is null)
+                throw new ArgumentNullException(nameof(sqlQuery));
 
-                return await _context.Database
-                        .SqlQuery<ReturnType>(sqlQuery).ToListAsync();
-            }
-            
+            return await _context.Database
+                    .SqlQuery<ReturnType>(sqlQuery).ToListAsync();
+
         }
 
     }

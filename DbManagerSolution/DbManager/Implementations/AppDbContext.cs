@@ -12,7 +12,7 @@ using System.Security.Principal;
 namespace DbManager.Implementations
 {
 
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IDbContext
     {
         private readonly DbConnectionSettings dbConnectionSettings;
 
@@ -68,22 +68,29 @@ namespace DbManager.Implementations
             base.OnModelCreating(modelBuilder);
         }
 
-        private void AddDbSetForEntities(ModelBuilder modelBuilder)
+        public void AddDbSetForEntities(ModelBuilder modelBuilder)
         {
             // Load the specified assembly.
             var assembly = Assembly.Load(_entitiesAssemblyName);
 
             // Scan the assembly containing your entities.
             var entityTypes = assembly.GetTypes()
-                .Where(type => (type.GetCustomAttribute<TableAttribute>() != null ||
-                                type.GetCustomAttribute<StoredProcedureAttribute>() != null) &&
-                               !type.IsAbstract);
+                                      .Where(type => (type.GetCustomAttribute<TableAttribute>() != null ||
+                                                      type.GetCustomAttribute<StoredProcedureAttribute>() != null) ||
+                                                      typeof(IDbResult).IsAssignableFrom(type) &&
+                                                      !type.IsAbstract);
 
             foreach (var entityType in entityTypes)
             {
                 // Adding entity classes to the model builder for EF Core
-                if (entityType.GetCustomAttribute<StoredProcedureAttribute>() != null)
+                if (typeof(IDbResult).IsAssignableFrom(entityType))
                 {
+                    // If entity implements IDbResult, treat it as a result without a key
+                    modelBuilder.Entity(entityType).HasNoKey().ToView(null);
+                }
+                else if (entityType.GetCustomAttribute<StoredProcedureAttribute>() != null)
+                {
+                    // If entity has StoredProcedureAttribute, treat it as a result without a key
                     modelBuilder.Entity(entityType).HasNoKey().ToView(null);
                 }
                 else
