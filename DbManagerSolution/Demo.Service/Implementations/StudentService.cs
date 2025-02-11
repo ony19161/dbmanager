@@ -88,7 +88,8 @@ namespace Demo.Service.Implementations
 
         public async Task<int> UpdateStudentSevice(UpdateStudentDTO updateStudentDTO)
         {
-           return await _studentRepository.UpdateAsync(_mapper.Map<Student>(updateStudentDTO));
+           await _studentRepository.UpdateAsync(_mapper.Map<Student>(updateStudentDTO));
+           return _studentRepository.SaveChanges();
         }
 
         public async Task<int> GetTotalStudentCount()
