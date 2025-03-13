@@ -17,18 +17,20 @@ namespace DbManager.Implementations
         private readonly DbConnectionSettings dbConnectionSettings;
 
         protected readonly IConfiguration _configuration;
+        private readonly string _connectionStringSectionName;
         private readonly string _entitiesAssemblyName;
 
-        public AppDbContext(IConfiguration configuration)
+        public AppDbContext(IConfiguration configuration, string connectionStringSectionName = "DefaultConnection")
         {
             _configuration = configuration;
+            _connectionStringSectionName = connectionStringSectionName;
             _entitiesAssemblyName = _configuration.GetSection("EntitiesAssemblyName").Value;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Read the database connection string from your app's configuration
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString(_connectionStringSectionName);
 
             if (!string.IsNullOrEmpty(connectionString))
             {
